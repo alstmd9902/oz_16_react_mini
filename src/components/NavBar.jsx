@@ -2,6 +2,7 @@ import { Moon, Search, Sun, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useDebounce from "../hook/useDebounce";
+import { supabaseClient } from "../lib/supabaseClient";
 
 //렌더링 될시 한번만 스타일 적용
 const buttonStyle =
@@ -14,6 +15,24 @@ export default function NavBar({ setIsDark, isDark }) {
   //delay는 useDebounce 내부 default 값(300ms)을 사용 변경할때 (searchText,500) 이런식으로 쓰면됨
   const debouncedQuery = useDebounce(searchText);
   const navigate = useNavigate(); //페이지 이동
+  const [user, setUser] = useState(null);
+
+  //로그인 로그아웃 감지 하는 훅 생성
+  useEffect(() => {
+    // 1️⃣ 처음 렌더링 시 로그인 상태 확인
+    supabaseClient.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user ?? null);
+    });
+
+    // 2️⃣ 로그인 / 로그아웃 감지
+    const {
+      data: { subscription }
+    } = supabaseClient.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   //login 페이지로 이동
   const handleLogin = (e) => {
@@ -25,6 +44,15 @@ export default function NavBar({ setIsDark, isDark }) {
   const handleSignUp = (e) => {
     e.preventDefault();
     navigate("/signup");
+  };
+
+  // 로그아웃 처리 함수
+  // 로그아웃 시 세션 종료 후 메인 페이지로 이동
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await supabaseClient.auth.signOut();
+    alert("로그아웃 되었습니다.");
+    navigate("/");
   };
 
   useEffect(() => {
@@ -77,19 +105,40 @@ export default function NavBar({ setIsDark, isDark }) {
           </button>
 
           <div className="flex items-center gap-2">
-            {/* pc 버전 */}
-            <button
-              onClick={handleLogin}
-              className={`hidden md:block ${buttonStyle}`}
-            >
-              로그인
-            </button>
-            <button
-              onClick={handleSignUp}
-              className={`hidden md:block ${buttonStyle}`}
-            >
-              회원가입
-            </button>
+            {/* 로그인 상태 판단 기준: user 상태 값 존재 여부 */}
+            {/* 조건부 렌더링 이유: 로그인 상태에 따라 보여줄 버튼이 다름 */}
+            {/* PC 버전 */}
+            {user ? (
+              <>
+                <button
+                  onClick={() => navigate("/favorites")}
+                  className={`hidden md:block ${buttonStyle}`}
+                >
+                  관심목록
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className={`hidden md:block ${buttonStyle}`}
+                >
+                  로그아웃
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={handleLogin}
+                  className={`hidden md:block ${buttonStyle}`}
+                >
+                  로그인
+                </button>
+                <button
+                  onClick={handleSignUp}
+                  className={`hidden md:block ${buttonStyle}`}
+                >
+                  회원가입
+                </button>
+              </>
+            )}
 
             {/* 모바일 유저 메뉴 아이콘 */}
             <div className="relative md:hidden">
@@ -105,18 +154,51 @@ export default function NavBar({ setIsDark, isDark }) {
               {/* 유저 아이콘 클릭 시 드롭다운 메뉴 */}
               {isUserMenuOpen && (
                 <div className="absolute right-0 top-11 w-32 rounded-md bg-white dark:bg-black/90 backdrop-blur-md border border-violet-600 shadow-lg overflow-hidden z-20">
-                  <button
-                    onClick={handleLogin}
-                    className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition"
-                  >
-                    로그인
-                  </button>
-                  <button
-                    onClick={handleSignUp}
-                    className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition"
-                  >
-                    회원가입
-                  </button>
+                  {/* 로그인 상태 판단 기준: user 상태 값 존재 여부 */}
+                  {/* 조건부 렌더링 이유: 로그인 상태에 따라 보여줄 버튼이 다름 */}
+                  {user ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          setIsUserMenuOpen(false);
+                          navigate("/favorites");
+                        }}
+                        className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition"
+                      >
+                        관심목록
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          setIsUserMenuOpen(false);
+                          handleLogout(e);
+                        }}
+                        className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition"
+                      >
+                        로그아웃
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          setIsUserMenuOpen(false);
+                          handleLogin(e);
+                        }}
+                        className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition"
+                      >
+                        로그인
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          setIsUserMenuOpen(false);
+                          handleSignUp(e);
+                        }}
+                        className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition"
+                      >
+                        회원가입
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
             </div>
