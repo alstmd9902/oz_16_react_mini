@@ -1,12 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
-import { supabase } from "@/lib/supabaseClient";
 import { createContext, useContext } from "react";
+import { supabaseClient } from "../lib/supabaseClient";
 
 const SupabaseContext = createContext(null);
 
 export const SupabaseProvider = ({ children }) => {
   return (
-    <SupabaseContext.Provider value={supabase}>
+    <SupabaseContext.Provider value={supabaseClient}>
       {children}
     </SupabaseContext.Provider>
   );
