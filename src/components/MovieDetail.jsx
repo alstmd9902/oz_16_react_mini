@@ -33,7 +33,7 @@ export default function MovieDetail() {
       {detail && (
         <section className="relative w-full h-full mt-16">
           {/* HERO 영역 (background 전용, content와 완전 분리) */}
-          <div className="relative w-full h-[70vh] overflow-hidden">
+          <div className="relative w-full h-[calc(35vh+28vw-64px)] min-h-[280px] max-h-[70vh] overflow-hidden">
             <div
               className="absolute aspect-auto inset-0 bg-top bg-cover dark:md:blur-xs blur-0"
               style={{
@@ -43,24 +43,30 @@ export default function MovieDetail() {
               }}
             />
             {/* 전체 배경 위에 어두운 오버레이 */}
-            <div className="absolute inset-0 bg-black/50" />
             <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-48
-                        bg-linear-to-b from-transparent to-[#ffffffd8]
-                        dark:from-transparent dark:to-zinc-950"
+              className="
+              absolute inset-0
+              bg-linear-to-b
+              from-black/40 via-black/60 to-black/70
+              md:from-black/60 md:via-black/50 md:to-black/80
+            "
+            />
+            <div
+              className="pointer-events-none absolute inset-x-0 bottom-0 
+                          h-32 bg-linear-to-b from-transparent to-[#ffffffd8]
+                          dark:from-transparent dark:to-zinc-950"
             />
           </div>
 
           {/* content 영역 */}
-          <div className="top-30 absolute z-1 px-4 flex w-full justify-center md:items-center items-start">
+          <div className="top-30 absolute z-1 px-4 flex w-full justify-center   md:items-center items-start">
             <div
               className="
                 flex gap-5 lg:gap-10 py-8 px-5 md:p-10 max-w-5xl w-full rounded-2xl
                 bg-transparent text-zinc-900
-                md:bg-white/10 md:backdrop-blur-md md:border md:border-white/40
-                dark:text-white
-                md:dark:bg-black/35 md:dark:backdrop-blur-sm md:dark:border-white/10
-              "
+                md:backdrop-blur-md md:border md:border-white/40
+                dark:text-white md:bg-white/10 
+                md:dark:bg-black/35 md:dark:backdrop-blur-sm md:dark:border-white/10"
             >
               {/* 카드 배경 이미지 (tablet & mobile) 일때 */}
               {/* <div
@@ -81,7 +87,7 @@ export default function MovieDetail() {
               />
 
               {/* 정보 */}
-              <div className="relative z-10 text-white flex flex-col justify-center">
+              <div className="relative z-10 text-white flex flex-col justify-center bottom-24 md:bottom-0">
                 {/* 제목 */}
                 <div className="flex items-center gap-3">
                   <h1 className="text-4xl font-bold tracking-tight">
