@@ -42,6 +42,7 @@ export default function NavBar({ setIsDark, isDark }) {
           </button>
           {/* 데스크탑 input */}
           <input
+            value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             type="text"
             placeholder="영화 검색..."
