@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import MovieCard from "./components/MovieCard";
 import MovieDetail from "./components/MovieDetail";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
 import Search from "./pages/Search";
 import Layout from "./share/Layout";
 
@@ -56,27 +58,27 @@ function App() {
           <Route
             path="/"
             element={
-              <main className="mt-14">
-                <section className="max-w-7xl mx-auto p-4">
-                  <ul className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">
-                    {movies.map((movie) => (
-                      <MovieCard
-                        key={movie.id}
-                        posterPath={movie.poster_path}
-                        title={movie.title}
-                        rating={movie.vote_average}
-                        id={movie.id}
-                      />
-                    ))}
-                  </ul>
-                </section>
-              </main>
+              <section className="max-w-7xl mx-auto p-4">
+                <ul className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">
+                  {movies.map((movie) => (
+                    <MovieCard
+                      key={movie.id}
+                      posterPath={movie.poster_path}
+                      title={movie.title}
+                      rating={movie.vote_average}
+                      id={movie.id}
+                    />
+                  ))}
+                </ul>
+              </section>
             }
           />
 
           {/* 상세 페이지 */}
           <Route path="/detail/:id" element={<MovieDetail />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Route>
       </Routes>
     </>

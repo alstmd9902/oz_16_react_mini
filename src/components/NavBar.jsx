@@ -15,6 +15,18 @@ export default function NavBar({ setIsDark, isDark }) {
   const debouncedQuery = useDebounce(searchText);
   const navigate = useNavigate(); //페이지 이동
 
+  //login 페이지로 이동
+  const handleLogin = (e) => {
+    e.preventDefault();
+    navigate("/login");
+  };
+
+  // 회원가입 폼 으로 이동
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    navigate("/signup");
+  };
+
   useEffect(() => {
     //검색어 지울때 메인페이지로 이동
     if (!debouncedQuery) {
@@ -40,6 +52,7 @@ export default function NavBar({ setIsDark, isDark }) {
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
+
           {/* 데스크탑 input */}
           <input
             value={searchText}
@@ -65,8 +78,16 @@ export default function NavBar({ setIsDark, isDark }) {
 
           <div className="flex items-center gap-2">
             {/* pc 버전 */}
-            <button className={`hidden md:block ${buttonStyle}`}>로그인</button>
-            <button className={`hidden md:block ${buttonStyle}`}>
+            <button
+              onClick={handleLogin}
+              className={`hidden md:block ${buttonStyle}`}
+            >
+              로그인
+            </button>
+            <button
+              onClick={handleSignUp}
+              className={`hidden md:block ${buttonStyle}`}
+            >
               회원가입
             </button>
 
@@ -84,10 +105,16 @@ export default function NavBar({ setIsDark, isDark }) {
               {/* 유저 아이콘 클릭 시 드롭다운 메뉴 */}
               {isUserMenuOpen && (
                 <div className="absolute right-0 top-11 w-32 rounded-md bg-white dark:bg-black/90 backdrop-blur-md border border-violet-600 shadow-lg overflow-hidden z-20">
-                  <button className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition">
+                  <button
+                    onClick={handleLogin}
+                    className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition"
+                  >
                     로그인
                   </button>
-                  <button className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition">
+                  <button
+                    onClick={handleSignUp}
+                    className="w-full py-2 text-sm text-black dark:text-white hover:bg-violet-600 hover:text-white transition"
+                  >
                     회원가입
                   </button>
                 </div>
