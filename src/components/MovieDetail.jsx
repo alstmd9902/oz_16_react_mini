@@ -31,17 +31,19 @@ export default function MovieDetail() {
   return (
     <>
       {detail && (
-        <section className="relative w-full h-full">
+        <section className="relative w-full h-full mt-16">
           {/* HERO 영역 (background 전용, content와 완전 분리) */}
-          <div className="relative w-full h-[66vh] overflow-hidden">
+          <div className="relative w-full h-[70vh] overflow-hidden">
             <div
-              className="absolute inset-0 bg-center bg-cover dark:md:blur-xs blur-0"
+              className="absolute aspect-auto inset-0 bg-top bg-cover dark:md:blur-xs blur-0"
               style={{
-                backgroundImage: `url(${baseUrl}${detail.backdrop_path})`
+                backgroundImage: `url(${baseUrl}${
+                  detail.backdrop_path || detail.poster_path
+                })`
               }}
             />
             {/* 전체 배경 위에 어두운 오버레이 */}
-            <div className="absolute inset-0 md:bg-black/20 bg-black/70" />
+            <div className="absolute inset-0 bg-black/50" />
             <div
               className="pointer-events-none absolute inset-x-0 bottom-0 h-48
                         bg-linear-to-b from-transparent to-[#ffffffd8]
@@ -53,10 +55,12 @@ export default function MovieDetail() {
           <div className="top-30 absolute z-1 px-4 flex w-full justify-center md:items-center items-start">
             <div
               className="
-                relative rounded-2xl
-                flex gap-5 lg:gap-10 py-8 px-5 md:p-10 max-w-5xl w-full md:bg-black/35
-                md:backdrop-blur-sm
-                md:border md:border-white/10"
+                flex gap-5 lg:gap-10 py-8 px-5 md:p-10 max-w-5xl w-full rounded-2xl
+                bg-transparent text-zinc-900
+                md:bg-white/10 md:backdrop-blur-md md:border md:border-white/40
+                dark:text-white
+                md:dark:bg-black/35 md:dark:backdrop-blur-sm md:dark:border-white/10
+              "
             >
               {/* 카드 배경 이미지 (tablet & mobile) 일때 */}
               {/* <div
@@ -85,31 +89,17 @@ export default function MovieDetail() {
                   </h1>
                 </div>
 
-                <div className="flex flex-col md:gap-2 gap-3">
-                  <div className="mt-4">
-                    별점 :
-                    <span className="inline-block rounded-full bg-yellow-400/20 text-yellow-300 px-2 py-0.5  mr-2">
-                      ⭐️ {detail.vote_average}
+                <div className="flex flex-col gap-3 mt-4 text-sm md:text-base text-gray-200">
+                  {/* 별점 , 장르 , 런타임 */}
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span className="text-yellow-300 font-medium">
+                      ⭐ {detail.vote_average.toFixed(1)}
                     </span>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-2">
-                    장르 :
-                    {detail.genres.map((g) => (
-                      <span
-                        key={g.id}
-                        className="inline-block rounded-full bg-white/15 text-gray-200 px-2 py-0.5"
-                      >
-                        {g.name}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* <p className="mt-1">상영시간: {detail.runtime}m</p> */}
-                  <div>
-                    상영시간 :
-                    <span className="inline-block rounded-full bg-white/15 text-gray-200 px-2 py-0.5  mr-2">
-                      {Math.floor(detail.runtime / 60)}시간{" "}
+                    <span className="opacity-60">|</span>
+                    <span>{detail.genres.map((g) => g.name).join(" · ")}</span>
+                    <span className="opacity-60">|</span>
+                    <span>
+                      {Math.floor(detail.runtime / 60)}시간
                       {detail.runtime % 60}분
                     </span>
                   </div>
