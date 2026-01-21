@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InputField from "../../components/InputField";
 import { useSupabase } from "../../context/AuthContext";
-
-const INPUT_BASE_CLASS = `w-full rounded-md bg-white/80 border border-zinc-300 
-  text-zinc-900 placeholder-zinc-600 dark:bg-black/40 dark:border-white/10 dark:text-white 
-  dark:placeholder-white/40 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500`;
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,36 +10,33 @@ export default function Login() {
     email: "",
     password: ""
   });
-  const [errors, setErrors] = useState({
+  const [error, setError] = useState({
     email: "",
     password: ""
   }); // 에러 상태값
 
   // 어떤 input이 사용자가 한 번이라도 건드렸는지 상태 저장
   // touched 상태를 사용하면 사용자가 입력을 시작하기 전에는 에러 메시지를 숨길 수 있음
-  const [touched, setTouched] = useState({
-    email: false,
-    password: false
-  });
+  const [touched, setTouched] = useState({ email: false, password: false });
 
   // 로그인 유효성 검사
   const validate = () => {
-    const newErrors = {};
+    const newError = {};
 
     const emailRegex =
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
     if (!emailRegex.test(value.email)) {
-      newErrors.email = "올바른 이메일 형식으로 입력해주세요";
+      newError.email = "올바른 이메일 형식으로 입력해주세요";
     }
 
     if (value.password.length < 8) {
-      newErrors.password = "비밀번호는 8자 이상이어야 합니다";
+      newError.password = "비밀번호는 8자 이상이어야 합니다";
     }
 
-    setErrors(newErrors);
+    setError(newError);
 
-    return Object.keys(newErrors).length === 0;
+    return Object.keys(newError).length === 0;
   };
 
   //input 상태변경 함수
@@ -123,39 +117,31 @@ export default function Login() {
 
             {/* Form */}
             <form onSubmit={handleLogin} className="space-y-6">
-              <div>
-                <input
-                  value={value.email}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  name="email"
-                  type="email"
-                  placeholder="Email address"
-                  className={INPUT_BASE_CLASS}
-                />
-                {touched.email && errors.email && (
-                  <p className="text-xs text-red-500 ml-2 mt-2">
-                    {errors.email}
-                  </p>
-                )}
-              </div>
+              <InputField
+                label="email"
+                hideLabel
+                value={value.email}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                name="email"
+                type="email"
+                placeholder="Email address"
+                error={error.email}
+                touched={touched.email}
+              />
 
-              <div>
-                <input
-                  value={value.password}
-                  onBlur={handleBlur}
-                  name="password"
-                  onChange={handleChange}
-                  type="password"
-                  placeholder="Password"
-                  className={INPUT_BASE_CLASS}
-                />
-                {touched.password && errors.password && (
-                  <p className="text-xs text-red-500 ml-2 mt-2">
-                    {errors.password}
-                  </p>
-                )}
-              </div>
+              <InputField
+                label="password"
+                hideLabel
+                value={value.password}
+                onBlur={handleBlur}
+                name="password"
+                onChange={handleChange}
+                type="password"
+                placeholder="Password"
+                error={error.password}
+                touched={touched.password}
+              />
 
               <div className="flex justify-end">
                 <button

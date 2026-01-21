@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InputField from "../../components/InputField";
 import { useSupabase } from "../../context/AuthContext";
 
 const INPUT_BASE_STYLE = `
@@ -22,7 +23,7 @@ export default function Signup() {
     confirmPassword: ""
   }); //input 관련 상태값 객체로 묶음
 
-  const [errors, setErrors] = useState({
+  const [error, setErrors] = useState({
     name: "",
     email: "",
     password: "",
@@ -151,76 +152,59 @@ export default function Signup() {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <input
-              value={values.name}
-              name="name"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              type="text"
-              placeholder="이름을 입력해주세요"
-              className={INPUT_BASE_STYLE}
-            />
-            {touched.name && errors.name ? (
-              <p className="text-xs text-red-500 ml-2 mt-2">{errors.name}</p>
-            ) : (
-              ""
-            )}
-          </div>
-          <div>
-            <input
-              value={values.email}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              name="email"
-              type="email"
-              placeholder="이메일 형식으로 입력해주세요"
-              className={INPUT_BASE_STYLE}
-            />
-            {touched.email && errors.email ? (
-              <p className="text-xs text-red-500 ml-2 mt-2">{errors.email}</p>
-            ) : (
-              ""
-            )}
-          </div>
+          <InputField
+            label="name"
+            hideLabel
+            value={values.name}
+            name="name"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            type="text"
+            placeholder="이름을 입력해주세요"
+            error={error.name}
+            touched={touched.name}
+          />
 
-          <div>
-            <input
-              value={values.password}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              name="password"
-              type="password"
-              placeholder="영문 대/소문자와 숫자를 조합해 입력"
-              className={INPUT_BASE_STYLE}
-            />
-            {touched.password && errors.password ? (
-              <p className="text-xs text-red-500 ml-2 mt-2">
-                {errors.password}
-              </p>
-            ) : (
-              ""
-            )}
-          </div>
+          <InputField
+            label="email"
+            hideLabel
+            value={values.email}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            name="email"
+            type="email"
+            placeholder="이메일 형식으로 입력해주세요"
+            className={INPUT_BASE_STYLE}
+            error={error.email}
+            touched={touched.email}
+          />
+          <InputField
+            label="비밀번호"
+            hideLabel
+            value={values.password}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            name="password"
+            type="password"
+            placeholder="영문 대/소문자와 숫자를 조합해 입력"
+            className={INPUT_BASE_STYLE}
+            error={error.password}
+            touched={touched.password}
+          />
 
-          <div>
-            <input
-              value={values.confirmPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              name="confirmPassword"
-              type="password"
-              placeholder="비밀번호와 동일하게 입력해주세요"
-              className={INPUT_BASE_STYLE}
-            />
-            {touched.confirmPassword && errors.confirmPassword ? (
-              <p className="text-xs text-red-500 ml-2 mt-2">
-                {errors.confirmPassword}
-              </p>
-            ) : (
-              ""
-            )}
-          </div>
+          <InputField
+            label="비밀번호 재입력"
+            hideLabel
+            value={values.confirmPassword}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            name="confirmPassword"
+            type="password"
+            placeholder="비밀번호와 동일하게 입력해주세요"
+            className={INPUT_BASE_STYLE}
+            error={error.confirmPassword}
+            touched={touched.confirmPassword}
+          />
 
           <button
             type="submit"
