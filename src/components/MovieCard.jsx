@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { baseUrl } from "../constants";
 
-export default function MovieCard({ posterPath, title, rating, id }) {
+export default function MovieCard({ posterPath, title, id }) {
   return (
     <li
       className="group rounded-xl overflow-hidden
@@ -19,9 +19,6 @@ export default function MovieCard({ posterPath, title, rating, id }) {
 
         <div className="p-3 text-black dark:text-white">
           <h3 className="text-base font-semibold truncate">제목 : {title}</h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
-            평점 : {rating}
-          </p>
         </div>
       </Link>
     </li>
