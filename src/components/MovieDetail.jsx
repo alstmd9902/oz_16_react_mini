@@ -15,9 +15,17 @@ export default function MovieDetail() {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
+      const { user } = data;
+      setUser(user);
+
+      const itemList = localStorage.getItem(`bookmarkMovieList_${user.id}`);
+      const favorites = itemList ? JSON.parse(itemList) : [];
+
+      const hasfavorite = favorites.some((f) => `${f.id}` === params.id);
+      if (hasfavorite) return setIsBookMark(true);
+      setIsBookMark(false);
     });
-  }, [supabase]);
+  }, [supabase, params.id]);
 
   //저장할 버튼 클릭시 로컬 스토리지 저장
   const populateStorage = () => {
