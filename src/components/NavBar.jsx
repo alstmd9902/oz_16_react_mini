@@ -1,6 +1,6 @@
 import { Moon, Search, Sun, User } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useDebounce from "../hook/useDebounce";
 import { supabaseClient } from "../lib/supabaseClient";
 
@@ -56,12 +56,21 @@ export default function NavBar({ setIsDark, isDark }) {
   }, [debouncedQuery]);
 
   return (
-    <nav className="fixed top-0 left-0 z-10 w-full h-16 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-black/10 dark:border-white/10">
-      <div className="h-full flex items-center justify-between px-12 gap-4">
-        <Link to="/" className="shrink-0">
-          <h1 className="text-5xl text-black dark:text-white font-['Bebas_Neue'] tracking-wider">
-            OZ
-            <b className="text-violet-600 text-3xl">무비.</b>
+    <nav
+      className="fixed top-0 left-0 z-10 w-full h-16 bg-white/80 dark:bg-black/80 
+                  backdrop-blur-md border-b border-black/10 dark:border-white/10"
+    >
+      <div className="h-full flex items-center justify-between px-8 sm:px-12 gap-4">
+        <Link to="/" className="shrink-0 flex items-center">
+          {/* 모바일(sm 이하): 아이콘 로고 */}
+          <div className="block sm:hidden">
+            <img src="/logo.svg" alt="CINE MA logo" className="w-8 h-8" />
+          </div>
+
+          {/* sm 이상: 텍스트 로고 */}
+          <h1 className="hidden sm:block text-5xl text-black dark:text-white font-['Bebas_Neue'] tracking-[0.12em]">
+            CINE
+            <b className="text-violet-600 text-3xl">MA.</b>
           </h1>
         </Link>
 

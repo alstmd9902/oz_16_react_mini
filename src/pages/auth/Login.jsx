@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputField from "../../components/InputField";
 import { useSupabase } from "../../context/AuthContext";
 
@@ -91,10 +91,9 @@ export default function Login() {
       {/* 오즈무비 로그인폼 묶음 */}
       <div
         className="relative z-10 w-full max-w-7xl mx-auto
-                  flex flex-col items-center gap-10
-                  md:grid md:grid-cols-2 md:gap-0"
+                   flex flex-col items-center gap-10"
       >
-        {/* OZ MOVIE 영역 왼쪽 */}
+        {/* 로고 영역 왼쪽 */}
         <div className="relative flex items-center justify-center shrink-0">
           <div
             className="leading-26 text-center relative z-10
@@ -103,12 +102,12 @@ export default function Login() {
              md:tracking-[0.2em] tracking-widest font-['Bebas_Neue'] 
              [text-shadow:0_0_20px_rgba(206, 81, 252, 0.42)] dark:[text-shadow:0_0_50px_rgba(255,255,255,0.25)]"
           >
-            OZ MOVIE
+            <Link to="/">CINEMA</Link>
           </div>
         </div>
 
         {/* 로그인 영역 */}
-        <div className="w-full flex justify-center md:justify-start md:h-[500px]">
+        <div className="w-full flex justify-center md:h-[500px]">
           <div className="relative z-10 max-w-md rounded-2xl bg-white/70 border border-zinc-200 dark:bg-black/10 dark:border-white/10 backdrop-blur-xl shadow-[0_30px_80px_rgba(0,0,0,0.6)] w-full px-10 py-16">
             {/* Header */}
             <h1 className="text-zinc-700 dark:text-white/60 text-2xl mb-8 w-full text-center font-black">
