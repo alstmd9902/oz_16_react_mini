@@ -473,9 +473,11 @@ export default function MovieDetail() {
                         {cast.length > 4 && (
                           <button
                             onClick={() => {
-                              castSectionRef.current?.scrollIntoView({
-                                behavior: "smooth",
-                                block: "start"
+                              requestAnimationFrame(() => {
+                                castSectionRef.current?.scrollIntoView({
+                                  block: "start",
+                                  behavior: "smooth"
+                                });
                               });
                             }}
                             className="ml-2 text-violet-400 hover:text-violet-300 transition text-xs"
@@ -624,7 +626,7 @@ export default function MovieDetail() {
               </div>
 
               {/* 출연자 정보 */}
-              <div ref={castSectionRef} className="mt-10">
+              <div ref={castSectionRef} className="mt-10 scroll-mt-32">
                 <h2 className={SECTION_TITLE}>출연진</h2>
                 <ul className={H_SCROLL}>
                   {cast.slice(0, 10).map((actor) => (

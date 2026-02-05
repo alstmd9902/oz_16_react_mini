@@ -145,9 +145,15 @@ export default function TopMovies() {
               })`
             }}
           />
-
+          {/* light mode bridge */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-32
+                        bg-linear-to-b from-black via-black/20 to-white/86 dark:to-zinc-950
+                        z-10 pointer-events-none"
+          />
           {/* overlay */}
           <div className="absolute inset-0 bg-black/90" />
+
           {/* content */}
           <div className="absolute inset-0 z-10 flex items-center">
             <div className="mx-auto w-full max-w-[1300px]">

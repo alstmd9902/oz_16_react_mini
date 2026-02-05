@@ -57,7 +57,7 @@ export default function NavBar({ setIsDark, isDark }) {
 
   return (
     <nav
-      className="fixed top-0 left-0 z-10 w-full h-16 bg-white/80 dark:bg-black/80 
+      className="fixed top-0 left-0 z-50 w-full h-16 bg-white/80 dark:bg-black/80 
                   backdrop-blur-md border-b border-black/10 dark:border-white/10"
     >
       <div className="h-full flex items-center justify-between px-8 sm:px-12 gap-4">
