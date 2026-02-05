@@ -29,7 +29,8 @@ export default function Main() {
   const [isLoading, setIsLoading] = useState(false);
   const [activeGenre, setActiveGenre] = useState("all"); // 장르 필터
   const [isGenreModalOpen, setIsGenreModalOpen] = useState(false);
-  const [isGenreSidebarOpen, setIsGenreSidebarOpen] = useState(true);
+  const [isGenreSidebarOpen, setIsGenreSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const topRef = useRef(null);
 
   const [showTopButton, setShowTopButton] = useState(false);
@@ -125,6 +126,14 @@ export default function Main() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const handleChange = (e) => setIsMobile(e.matches);
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
   const filteredMovies =
     activeGenre === "all"
       ? movies
@@ -161,18 +170,19 @@ export default function Main() {
         </button>
       </div>
 
-      <section className="max-w-[1600px] mx-auto relative flex gap-6">
+      <section className="max-w-[1600px] mx-auto relative flex gap-6 mt-2">
         {/* 왼쪽 장르 선택 사이드바 (해당 섹션 내에서만 sticky) */}
-        <div className="hidden md:block sticky left-6 top-24 self-start">
+        <div className="hidden md:block sticky left-3 top-24 self-start">
           <div
-            className="bg-zinc-900/85 backdrop-blur
-                          rounded-2xl border border-violet-500/30
-                          shadow-[0_10px_40px_rgba(139,92,246,0.25)] p-2 w-[160px]"
+            className="dark:bg-zinc-900/85 backdrop-blur
+                          rounded-2xl border dark:border-violet-500/30
+                          shadow-[0_10px_40px_rgba(139,92,246,0.25)] p-2 w-[170px]"
           >
             {/* 헤더 버튼 */}
             <button
               onClick={() => setIsGenreSidebarOpen((prev) => !prev)}
-              className="w-full flex items-center justify-between text-sm text-zinc-100 px-2 py-2 rounded-lg hover:bg-violet-600/20 transition"
+              className="w-full flex items-center justify-between text-sm px-2 py-2 rounded-lg 
+              hover:bg-violet-600/20 transition"
             >
               <span className="flex items-center gap-2">🎬 장르 선택하기</span>
               <span
@@ -190,7 +200,7 @@ export default function Main() {
                   strokeWidth="2.2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="text-zinc-300"
+                  className="dark:text-zinc-300"
                 >
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
@@ -203,12 +213,11 @@ export default function Main() {
                 <button
                   onClick={() => {
                     setActiveGenre("all");
-                    scrollToTop();
                   }}
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition ${
                     activeGenre === "all"
                       ? "bg-violet-600 text-white"
-                      : "text-zinc-300 hover:bg-zinc-800"
+                      : "dark:text-zinc-300 dark:hover:bg-zinc-800 hover:bg-zinc-400"
                   }`}
                 >
                   전체
@@ -219,12 +228,11 @@ export default function Main() {
                     key={id}
                     onClick={() => {
                       setActiveGenre(id);
-                      scrollToTop();
                     }}
                     className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition ${
                       activeGenre === id
                         ? "bg-violet-600 text-white"
-                        : "text-zinc-300 hover:bg-zinc-800"
+                        : "dark:text-zinc-300 dark:hover:bg-zinc-800 hover:bg-zinc-400"
                     }`}
                   >
                     {name}
@@ -235,7 +243,7 @@ export default function Main() {
           </div>
         </div>
         <div className="flex-1">
-          <div className="bg-zinc-900/60 rounded-2xl p-4">
+          <div className="p-4 pt-0">
             <ul className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">
               {filteredMovies.map((movie) => (
                 <MovieCard
@@ -252,7 +260,7 @@ export default function Main() {
         </div>
       </section>
       {/* 모바일 장르 모달 */}
-      {isGenreModalOpen && (
+      {isMobile && isGenreModalOpen && (
         <div className="fixed inset-0 z-50 flex items-end bg-black/60">
           <div className="w-full max-h-[70vh] rounded-t-2xl bg-zinc-900 p-4 animate-slide-up">
             <div className="flex items-center justify-between mb-4">
@@ -270,7 +278,6 @@ export default function Main() {
               <button
                 onClick={() => {
                   setActiveGenre("all");
-                  scrollToTop();
                   setIsGenreModalOpen(false);
                 }}
                 className={`py-2 rounded-lg text-sm transition
@@ -288,7 +295,6 @@ export default function Main() {
                   key={id}
                   onClick={() => {
                     setActiveGenre(id);
-                    scrollToTop();
                     setIsGenreModalOpen(false);
                   }}
                   className={`py-2 rounded-lg text-sm transition
